@@ -72,7 +72,7 @@ final public class AnimatedImage {
     let frames: [CGImage]
     let keyTimes: [NSNumber]
 
-    init?(gifData: Data) {
+    public init?(gifData: Data) {
         guard let imageSource = ImageSource(data: gifData),
             imageSource.conforms(to: kUTTypeGIF),
             let imageProperties = imageSource.properties(for: kCGImagePropertyGIFDictionary) else {
@@ -98,12 +98,12 @@ final public class AnimatedImage {
                 continue
             }
 
-            let delayTime: Float = gifProperties[kCGImagePropertyGIFUnclampedDelayTime] as? Float
-                ?? gifProperties[kCGImagePropertyGIFDelayTime] as? Float
-                ?? delayTimes.last
-                ?? 1.0 / 60.0 // default to 60fps for gifs because why not
+            let delayTime: Double = gifProperties[kCGImagePropertyGIFUnclampedDelayTime] as? Double
+                ?? gifProperties[kCGImagePropertyGIFDelayTime] as? Double
+                ?? delayTimes.last.map { Double($0) }
+                ?? Double(1.0 / 60.0) // default to 60fps for gifs because why not
 
-            delayTimes.append(delayTime)
+            delayTimes.append(Float(delayTime))
             frames.append(frameImage)
         }
 
