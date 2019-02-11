@@ -25,7 +25,7 @@ private class ImageSource {
         guard let imageSourceContainerType = CGImageSourceGetType(imageSource) else {
             return false
         }
-        return UTTypeConformsTo(imageSourceContainerType, kUTTypeGIF)
+        return UTTypeConformsTo(imageSourceContainerType, type)
     }
 
     func properties() -> NSDictionary? {
